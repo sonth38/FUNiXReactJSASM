@@ -1,8 +1,20 @@
 import React, { Component } from 'react';
 import { Navbar, NavbarBrand} from 'reactstrap';
 import Menu from './component/MenuComponent';
+import { DISHES } from './shared/dishes';
 import './App.css';
 class App extends Component {
+
+
+// Khai báo trạng thái lên App.js
+
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      dishes: DISHES
+    };
+  }
 
   render() {
     return (
@@ -12,7 +24,9 @@ class App extends Component {
             <NavbarBrand href="/">Ristorante Con Fusion</NavbarBrand>
           </div>
         </Navbar>
-        <Menu />
+
+        {/* Truyền trạng thái của App.js cho thằng con Menu */}
+        <Menu dishes={this.state.dishes}/>
       </div>
       
     );
