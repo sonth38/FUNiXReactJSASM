@@ -56,11 +56,13 @@ class StaffList extends Component {
         });
         return (
             <div className="container">
-                <div className='row'>
+                <div className='row mt-2'>
                     <button onClick={() => this.onRowSelect("col-12 col-md-6 mt-3")}>2 cột</button>
                     <button onClick={() => this.onRowSelect("col-12 col-md-4 mt-3")}>3 cột</button>
                     <button onClick={() => this.onRowSelect("col-12 col-lg-2 mt-3")}>6 cột</button>
+                    <button className='row ml-5' onClick={() => this.onStaffSelect(null)}>Ẩn thông tin nhân viên</button>
                 </div>
+
                 <div className="row">
                     {staff}
                 </div>
