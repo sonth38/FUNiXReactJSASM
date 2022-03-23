@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import dateFormat from 'dateformat';
-import { Card, CardTitle, CardBody, CardText } from 'reactstrap';
+import { Card, CardTitle, CardBody, CardText, CardImg } from 'reactstrap';
 
 class StaffList extends Component {
 
@@ -20,6 +20,9 @@ class StaffList extends Component {
         if (staff != null)
             return (
                 <Card>
+                    <CardBody>
+                        <CardImg width="100%" src={staff.image} alt={staff.name} />
+                    </CardBody>
                     <CardBody>
                         <CardTitle>Họ và tên: {staff.name}</CardTitle>
                         <CardText>Ngày sinh: {dateFormat(staff.doB, "dd/mm/yyyy")}</CardText>
