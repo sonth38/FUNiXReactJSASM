@@ -63,7 +63,7 @@ class StaffList extends Component {
                     <button className='row ml-5' onClick={() => this.onStaffSelect(null)}>Ẩn thông tin nhân viên</button>
                 </div>
 
-                <div className="row">
+                <div className="row text-center">
                     {staff}
                 </div>
                 <div>
