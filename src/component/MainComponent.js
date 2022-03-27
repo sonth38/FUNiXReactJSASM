@@ -7,9 +7,6 @@ import '../App.css';
 
 class Main extends Component {
 
-
-// Khai báo trạng thái lên App.js
-
   constructor(props) {
     super(props);
 
