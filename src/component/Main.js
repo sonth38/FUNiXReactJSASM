@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import Header from "./Header";
 import StaffList from "./Staff";
 import StaffDetail from "./StaffDetail";
+import Department from "./Department";
 import Footer from "./Footer";
 import { STAFFS, DEPARTMENTS } from "../shared/staffs"
 import { Switch, Route, Redirect } from 'react-router-dom';
@@ -32,6 +33,7 @@ class Main extends Component{
                 <Switch>
                     <Route exact path='/staffs' component={() => <StaffList staffs={this.state.staffs} />} />
                     <Route path='/staffs/:staffId' component={StaffWithId} />
+                    <Route path='/department' component={() => <Department departments={this.state.departments} />} />
                     <Redirect to="/staffs" />
                 </Switch>
                 <Footer />
