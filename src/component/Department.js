@@ -30,7 +30,7 @@ class Department extends Component {
         })
         return(
             <div className="container">
-                <div className="row shadow m-3">
+                <div className="row m-3">
                     {departments}
                 </div>
             </div>
