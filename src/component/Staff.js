@@ -7,7 +7,6 @@ import { Link } from 'react-router-dom'
 import { Control, LocalForm, Errors } from 'react-redux-form';
 
 
-
 class StaffList extends Component {
     constructor(props) {
         super(props);
@@ -86,8 +85,12 @@ class StaffList extends Component {
             department : this.state.department,
             annualLeave : this.state.annualLeave,
             overTime : this.state.overTime,
+            image : this.state.image,
+
         };
-        this.props.onAdd(newStaff)
+        this.props.onAdd(newStaff);
+        console.log(this.state.department);  
+
     };
 
     handleBlur = (field) => (event) => {
