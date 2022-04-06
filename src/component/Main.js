@@ -4,19 +4,21 @@ import StaffList from "./Staff";
 import StaffDetail from "./StaffDetail";
 import Department from "./Department";
 import Footer from "./Footer";
-import { STAFFS, DEPARTMENTS } from "../shared/staffs"
-import { Switch, Route, Redirect } from 'react-router-dom';
+import { Switch, Route, Redirect, withRouter } from 'react-router-dom'
+import { connect } from 'react-redux';
 import Salary from "./Salary";
 
-
+const mapStateToProps = state => {
+    return {
+      staffs: state.staffs,
+      departments: state.departments
+    }
+}
 
 class Main extends Component{
     constructor(props){
         super(props)
-        this.state = {
-            staffs: STAFFS,
-            departments: DEPARTMENTS
-        }
+
         this.addStaff = this.addStaff.bind(this);
     }
 
@@ -33,7 +35,7 @@ class Main extends Component{
     render() {
         const StaffWithId = ({ match }) => {
             return (
-              <StaffDetail staff={this.state.staffs.filter((staff) => staff.id === parseInt(match.params.staffId, 10))[0]}
+              <StaffDetail staff={this.props.staffs.filter((staff) => staff.id === parseInt(match.params.staffId, 10))[0]}
               />
             );
         }
@@ -42,10 +44,10 @@ class Main extends Component{
             <div>
                 <Header />
                 <Switch>
-                    <Route exact path='/staffs' component={() => <StaffList onAdd={this.addStaff} staffs={this.state.staffs} />} />
+                    <Route exact path='/staffs' component={() => <StaffList onAdd={this.addStaff} staffs={this.props.staffs} />} />
                     <Route path='/staffs/:staffId' component={StaffWithId} />
-                    <Route path='/department' component={() => <Department departments={this.state.departments} />} />
-                    <Route exact path='/salary' component={() => <Salary staffs={this.state.staffs} />} />
+                    <Route path='/department' component={() => <Department departments={this.props.departments} />} />
+                    <Route exact path='/salary' component={() => <Salary staffs={this.props.staffs} />} />
                     <Redirect to="/staffs" />
                 </Switch>
                 <Footer />
@@ -54,4 +56,4 @@ class Main extends Component{
     }
 }
 
-export default Main
+export default withRouter(connect(mapStateToProps)(Main));
