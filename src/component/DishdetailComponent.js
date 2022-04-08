@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 import { Card, CardImg, CardText, CardBody, CardTitle, Breadcrumb, BreadcrumbItem,
-   Row, Col, Button, Modal, ModalHeader, ModalBody,
-   Form, FormGroup, Input, Label } from "reactstrap";
+   Row, Col, Button, Modal, ModalHeader, ModalBody, Label } from "reactstrap";
 import { Control, LocalForm, Errors } from 'react-redux-form';
 import { Link } from 'react-router-dom'
 
@@ -26,9 +25,10 @@ class CommentForm extends Component {
       isCommentFormOpen: ! this.state.isCommentFormOpen
     });
   }
+
   handleSubmit(values) {
-    console.log('Current State is: ' + JSON.stringify(values));
-    alert('Current State is: ' + JSON.stringify(values));
+    this.toggleCommentForm();
+    this.props.addComment(this.props.dishId, values.rating, values.author, values.comment);
   }
 
 
@@ -64,9 +64,9 @@ class CommentForm extends Component {
                   </Col>
                 </Row>
                 <Row>
-                  <Label htmlFor='yourname' md={12}>Your Name</Label>
+                  <Label htmlFor='author' md={12}>Your Name</Label>
                   <Col md={12}>
-                    <Control.text model='.yourname' id='yourname' name='yourname'
+                    <Control.text model='.author' id='author' name='author'
                         placeholder='Your Name' className='form-control'
                         validators={{
                           required, minLength: minLength(3), maxLength: maxLength(15)
@@ -74,7 +74,7 @@ class CommentForm extends Component {
                       />
                     <Errors
                         className="text-danger"
-                        model=".yourname"
+                        model=".author"
                         show="touched"
                         messages={{
                             required: 'Required',
@@ -85,9 +85,9 @@ class CommentForm extends Component {
                   </Col>
                 </Row>
                 <Row>
-                  <Label htmlFor="message" md={12}>Comment</Label>
+                  <Label htmlFor="comment" md={12}>Comment</Label>
                   <Col md={12}>
-                    <Control.textarea model=".message" id="message" name="message"
+                    <Control.textarea model=".comment" id="comment" name="comment"
                           rows="6" className='form-control'/>
                   </Col>
                 </Row>
@@ -118,7 +118,7 @@ class CommentForm extends Component {
     );
   }
 
-  function RenderComments({comments}) {
+  function RenderComments({comments, addComment, dishId}) {
     if (comments != null) {
       return (
         <div className="col-12 col-md-5 m-1">
@@ -136,7 +136,7 @@ class CommentForm extends Component {
               );
             })}
           </ul>
-          <CommentForm />
+          <CommentForm dishId={dishId} addComment={addComment} /> 
         </div>
       );
     } else {
@@ -161,7 +161,10 @@ class CommentForm extends Component {
         
           <div className="row">
             <RenderDish dish={props.dish} />
-            <RenderComments comments={props.comments}/>
+            <RenderComments comments={props.comments}
+              addComment={props.addComment}
+              dishId={props.dish.id}
+            />
             {/* <CommentForm /> */}
           </div>
         </div>
