@@ -1,36 +1,54 @@
 import React, { Component } from "react";
-import { Card, CardImg, CardBody, CardSubtitle, 
+import {
+    Card, CardImg, CardBody, CardSubtitle,
     Breadcrumb, BreadcrumbItem, FormGroup, Input,
     Form, Label, Col, Button, Row,
-    Modal, ModalBody, ModalHeader, FormFeedback} from "reactstrap";
+    Modal, ModalBody, ModalHeader, FormFeedback
+} from "reactstrap";
 import { Link } from 'react-router-dom'
 import { Control, LocalForm, Errors } from 'react-redux-form';
+import { baseUrl } from '../shared/baseUrl';
+
+function RenderStaffList({ staffs }) {
+    return (
+        <div className="col-6 col-md-4 col-lg-2 mt-3 mb-3">
+            <Card>
+                <Link to={`/staffs/${staffs.id}`}>
+                    <CardImg width="100%" src={staffs.image} alt={staffs.name} />
+                    <CardBody>
+                        <CardSubtitle>{staffs.name}</CardSubtitle>
+                    </CardBody>
+                </Link>
+            </Card>
+        </div>
+    );
+}
 
 
 class StaffList extends Component {
     constructor(props) {
         super(props);
         this.state = {
-           staffs : this.props.staffs,
-           isModalOpen : false,
-           name: '',
-           doB : '',
-           salaryScale : 1,
-           startDate : '',
-           department : 'Sale',
-           annualLeave : 0,
-           overTime : 0,
-           salary : 300000,
-           image: '/assets/images/alberto.png',
-           touched: {
+            
+            isModalOpen: false,
+            name: '',
+            doB: '',
+            salaryScale: 1,
+            startDate: '',
+            department: 'Sale',
+            annualLeave: 0,
+            overTime: 0,
+            salary: 300000,
+            image: '/assets/images/alberto.png',
+            touched: {
                 name: false,
-                doB : false,
-                salaryScale : false,
-                startDate : false,
-                department : false,
-                annualLeave : false,
-                overTime : false,
-           }
+                doB: false,
+                salaryScale: false,
+                startDate: false,
+                department: false,
+                annualLeave: false,
+                overTime: false,
+            }
         };
         this.handleSubmit = this.handleSubmit.bind(this);
         this.toggleModal = this.toggleModal.bind(this);
@@ -48,12 +66,12 @@ class StaffList extends Component {
 
         if (values.searchtext == undefined || values.searchtext == null) {
             this.setState({
-                staffs : searchStaffList
+                staffs: searchStaffList
             });
         }
-         else {
+        else {
             this.setState({
-                staffs : searchStaffList.filter((staff) => {
+                staffs: searchStaffList.filter((staff) => {
                     return staff.name.toLowerCase().indexOf(values.searchtext.toLowerCase()) !== -1;
                 })
             });
@@ -62,7 +80,7 @@ class StaffList extends Component {
 
     toggleModal() {
         this.setState({
-          isModalOpen: !this.state.isModalOpen
+            isModalOpen: !this.state.isModalOpen
         });
     }
 
@@ -72,34 +90,34 @@ class StaffList extends Component {
         const name = target.name;
 
         this.setState({
-            [name] : value
+            [name]: value
         });
     }
 
     handlePlus = () => {
         const newStaff = {
             name: this.state.name,
-            doB : this.state.doB,
-            salaryScale : this.state.salaryScale,
-            startDate : this.state.startDate,
-            department : this.state.department,
-            annualLeave : this.state.annualLeave,
-            overTime : this.state.overTime,
-            image : this.state.image,
+            doB: this.state.doB,
+            salaryScale: this.state.salaryScale,
+            startDate: this.state.startDate,
+            department: this.state.department,
+            annualLeave: this.state.annualLeave,
+            overTime: this.state.overTime,
+            image: this.state.image,
 
         };
         this.props.onAdd(newStaff);
-        console.log(this.state.department);  
+        console.log(this.state.department);
 
     };
 
     handleBlur = (field) => (event) => {
         this.setState({
-            touched : {...this.state.touched, [field] : true}
+            touched: { ...this.state.touched, [field]: true }
         });
     }
 
-    validate(name, doB, salaryScale, startDate, department, annualLeave, overTime ) {
+    validate(name, doB, salaryScale, startDate, department, annualLeave, overTime) {
         const errors = {
             name: '',
             doB: '',
@@ -117,15 +135,15 @@ class StaffList extends Component {
         if (this.state.touched.department && department.length < 1)
             errors.department = 'Yêu cầu nhập ';
         if (this.state.touched.salaryScale && salaryScale.length < 1)
-        errors.salaryScale = 'Yêu cầu nhập ';
+            errors.salaryScale = 'Yêu cầu nhập ';
         if (this.state.touched.doB && doB.length < 1)
-        errors.doB = 'Yêu cầu nhập ';
+            errors.doB = 'Yêu cầu nhập ';
         if (this.state.touched.startDate && startDate.length < 1)
-        errors.startDate = 'Yêu cầu nhập ';
+            errors.startDate = 'Yêu cầu nhập ';
         if (this.state.touched.annualLeave && annualLeave.length < 1)
-        errors.annualLeave = 'Yêu cầu nhập ';
+            errors.annualLeave = 'Yêu cầu nhập ';
         if (this.state.touched.overTime && overTime.length < 1)
-        errors.overTime = 'Yêu cầu nhập ';
+            errors.overTime = 'Yêu cầu nhập ';
         return errors;
     }
 
@@ -139,23 +157,18 @@ class StaffList extends Component {
             this.state.annualLeave,
             this.state.overTime
         )
+            console.log(this.props.staffs)
+        const menu = this.props.staffs.map((val) => {
+        return (
+          <div className="col-6 col-md-4 col-lg-2 mt-3 mb-3" key={val.id}>
+            <RenderStaffList
+              staffs={val}
+            />
+          </div>
+        );
+      });
 
-        const RenderStaffList = this.state.staffs.map((staff) => {
-            return(
-                <div className="col-6 col-md-4 col-lg-2 mt-3 mb-3">
-                    <Card>
-                        <Link to={`/staffs/${staff.id}`}>
-                            <CardImg width="100%" src={staff.image} alt={staff.name} />
-                            <CardBody>
-                                <CardSubtitle>{staff.name}</CardSubtitle>
-                            </CardBody>
-                        </Link>
-                    </Card>
-                </div>
-            );
-        })
-        
-        return(
+        return (
             <div className="container">
                 <div className="row">
                     <Breadcrumb>
@@ -191,146 +204,146 @@ class StaffList extends Component {
                     </Col>
                 </div>
                 <div className="row">
-                    {RenderStaffList}
+                    {menu}
                 </div>
                 <Modal isOpen={this.state.isModalOpen} toggle={this.toggleModal}>
-                        <ModalHeader toggle={this.toggleModal}>Thêm Nhân Viên</ModalHeader>
-                        <ModalBody>
-                            <Form onSubmit={this.handlePlus}>
-                                <Row className='control-group'>
-                                    <Label md={5}>Tên</Label>
-                                    <Col md={7}>
-                                        <Input 
-                                            type = "text"
-                                            className = 'form-control'
-                                            id = 'name'
-                                            name = 'name'
-                                            value = {this.state.name}
-                                            valid = {errors.name ===''}
-                                            invalid = {errors.name !== ''}
-                                            onBlur = {this.handleBlur('name')}
-                                            onChange = {this.handleInputChange}
-                                        />
-                                        <FormFeedback>{errors.name}</FormFeedback>
-                                    </Col>
-                                </Row>
-                                <Row className='control-group'>
-                                    <Label md={5}>Ngày sinh</Label>
-                                    <Col md={7}>
-                                        <Input 
-                                            type = "date"
-                                            className = 'form-control'
-                                            id = 'doB'
-                                            name = 'doB'
-                                            value = {this.state.doB}
-                                            valid = {errors.doB ===''}
-                                            invalid = {errors.doB !== ''}
-                                            onBlur = {this.handleBlur('doB')}
-                                            onChange = {this.handleInputChange}
-                                        />
-                                        <FormFeedback>{errors.doB}</FormFeedback>
-                                    </Col>
-                                </Row>
-                                <Row className='control-group'>
-                                    <Label md={5}>Ngày vào công ty</Label>
-                                    <Col md={7}>
-                                        <Input 
-                                            type = "date"
-                                            className = 'form-control'
-                                            id = 'startDate'
-                                            name = 'startDate'
-                                            value = {this.state.startDate}
-                                            valid = {errors.startDate ===''}
-                                            invalid = {errors.startDate !== ''}
-                                            onBlur = {this.handleBlur('startDate')}
-                                            onChange = {this.handleInputChange}
-                                        />
-                                        <FormFeedback>{errors.startDate}</FormFeedback>
-                                    </Col>
-                                </Row>
-                                <Row className='control-group'>
-                                    <Label md={5}>Phòng ban</Label>
-                                    <Col md={7}>
-                                        <Input 
-                                            type = "select"
-                                            className = 'form-control'
-                                            id = 'department'
-                                            name = 'department'
-                                            value = {this.state.department}
-                                            valid = {errors.department ===''}
-                                            invalid = {errors.department !== ''}
-                                            onBlur = {this.handleBlur('department')}
-                                            onChange = {this.handleInputChange}
-                                        >
-                                            <option>Sale</option>
-                                            <option>HR</option>
-                                            <option>Marketing</option>
-                                            <option>IT</option>
-                                            <option>Finance</option>
-                                        </Input>
-                                        <FormFeedback>{errors.department}</FormFeedback>
-                                    </Col>
-                                </Row>
-                                <Row className='control-group'>
-                                    <Label md={5}>Hệ số lương</Label>
-                                    <Col md={7}>
-                                        <Input 
-                                            type = "text"
-                                            className = 'form-control'
-                                            id = 'salaryScale'
-                                            name = 'salaryScale'
-                                            value = {this.state.salaryScale}
-                                            valid = {errors.salaryScale ===''}
-                                            invalid = {errors.salaryScale !== ''}
-                                            onBlur = {this.handleBlur('salaryScale')}
-                                            onChange = {this.handleInputChange}
-                                        />
-                                        <FormFeedback>{errors.salaryScale}</FormFeedback>
-                                    </Col>
-                                </Row>
-                                <Row className='control-group'>
-                                    <Label md={5}>Số ngày nghỉ còn lại</Label>
-                                    <Col md={7}>
-                                        <Input 
-                                            type = "text"
-                                            className = 'form-control'
-                                            id = 'annualLeave'
-                                            name = 'annualLeave'
-                                            value = {this.state.annualLeave}
-                                            valid = {errors.annualLeave ===''}
-                                            invalid = {errors.annualLeave !== ''}
-                                            onBlur = {this.handleBlur('annualLeave')}
-                                            onChange = {this.handleInputChange}
-                                        />
-                                        <FormFeedback>{errors.annualLeave}</FormFeedback>
-                                    </Col>
-                                </Row>
-                                <Row className='control-group'>
-                                    <Label md={5}>Số ngày đã làm thêm</Label>
-                                    <Col md={7}>
-                                        <Input 
-                                            type = "text"
-                                            className = 'form-control'
-                                            id = 'overTime'
-                                            name = 'overTime'
-                                            value = {this.state.overTime}
-                                            valid = {errors.overTime ===''}
-                                            invalid = {errors.overTime !== ''}
-                                            onBlur = {this.handleBlur('overTime')}
-                                            onChange = {this.handleInputChange}
-                                        />
-                                        <FormFeedback>{errors.overTime}</FormFeedback>
-                                    </Col>
-                                </Row>
-                                <Button type="submit" value="submit" color="primary">Thêm</Button>
-                            </Form>
-                        </ModalBody>
+                    <ModalHeader toggle={this.toggleModal}>Thêm Nhân Viên</ModalHeader>
+                    <ModalBody>
+                        <Form onSubmit={this.handlePlus}>
+                            <Row className='control-group'>
+                                <Label md={5}>Tên</Label>
+                                <Col md={7}>
+                                    <Input
+                                        type="text"
+                                        className='form-control'
+                                        id='name'
+                                        name='name'
+                                        value={this.state.name}
+                                        valid={errors.name === ''}
+                                        invalid={errors.name !== ''}
+                                        onBlur={this.handleBlur('name')}
+                                        onChange={this.handleInputChange}
+                                    />
+                                    <FormFeedback>{errors.name}</FormFeedback>
+                                </Col>
+                            </Row>
+                            <Row className='control-group'>
+                                <Label md={5}>Ngày sinh</Label>
+                                <Col md={7}>
+                                    <Input
+                                        type="date"
+                                        className='form-control'
+                                        id='doB'
+                                        name='doB'
+                                        value={this.state.doB}
+                                        valid={errors.doB === ''}
+                                        invalid={errors.doB !== ''}
+                                        onBlur={this.handleBlur('doB')}
+                                        onChange={this.handleInputChange}
+                                    />
+                                    <FormFeedback>{errors.doB}</FormFeedback>
+                                </Col>
+                            </Row>
+                            <Row className='control-group'>
+                                <Label md={5}>Ngày vào công ty</Label>
+                                <Col md={7}>
+                                    <Input
+                                        type="date"
+                                        className='form-control'
+                                        id='startDate'
+                                        name='startDate'
+                                        value={this.state.startDate}
+                                        valid={errors.startDate === ''}
+                                        invalid={errors.startDate !== ''}
+                                        onBlur={this.handleBlur('startDate')}
+                                        onChange={this.handleInputChange}
+                                    />
+                                    <FormFeedback>{errors.startDate}</FormFeedback>
+                                </Col>
+                            </Row>
+                            <Row className='control-group'>
+                                <Label md={5}>Phòng ban</Label>
+                                <Col md={7}>
+                                    <Input
+                                        type="select"
+                                        className='form-control'
+                                        id='department'
+                                        name='department'
+                                        value={this.state.department}
+                                        valid={errors.department === ''}
+                                        invalid={errors.department !== ''}
+                                        onBlur={this.handleBlur('department')}
+                                        onChange={this.handleInputChange}
+                                    >
+                                        <option>Sale</option>
+                                        <option>HR</option>
+                                        <option>Marketing</option>
+                                        <option>IT</option>
+                                        <option>Finance</option>
+                                    </Input>
+                                    <FormFeedback>{errors.department}</FormFeedback>
+                                </Col>
+                            </Row>
+                            <Row className='control-group'>
+                                <Label md={5}>Hệ số lương</Label>
+                                <Col md={7}>
+                                    <Input
+                                        type="text"
+                                        className='form-control'
+                                        id='salaryScale'
+                                        name='salaryScale'
+                                        value={this.state.salaryScale}
+                                        valid={errors.salaryScale === ''}
+                                        invalid={errors.salaryScale !== ''}
+                                        onBlur={this.handleBlur('salaryScale')}
+                                        onChange={this.handleInputChange}
+                                    />
+                                    <FormFeedback>{errors.salaryScale}</FormFeedback>
+                                </Col>
+                            </Row>
+                            <Row className='control-group'>
+                                <Label md={5}>Số ngày nghỉ còn lại</Label>
+                                <Col md={7}>
+                                    <Input
+                                        type="text"
+                                        className='form-control'
+                                        id='annualLeave'
+                                        name='annualLeave'
+                                        value={this.state.annualLeave}
+                                        valid={errors.annualLeave === ''}
+                                        invalid={errors.annualLeave !== ''}
+                                        onBlur={this.handleBlur('annualLeave')}
+                                        onChange={this.handleInputChange}
+                                    />
+                                    <FormFeedback>{errors.annualLeave}</FormFeedback>
+                                </Col>
+                            </Row>
+                            <Row className='control-group'>
+                                <Label md={5}>Số ngày đã làm thêm</Label>
+                                <Col md={7}>
+                                    <Input
+                                        type="text"
+                                        className='form-control'
+                                        id='overTime'
+                                        name='overTime'
+                                        value={this.state.overTime}
+                                        valid={errors.overTime === ''}
+                                        invalid={errors.overTime !== ''}
+                                        onBlur={this.handleBlur('overTime')}
+                                        onChange={this.handleInputChange}
+                                    />
+                                    <FormFeedback>{errors.overTime}</FormFeedback>
+                                </Col>
+                            </Row>
+                            <Button type="submit" value="submit" color="primary">Thêm</Button>
+                        </Form>
+                    </ModalBody>
                 </Modal>
             </div>
         );
 
     }
-} 
+}
 
 
 export default StaffList
