@@ -8,10 +8,11 @@ import {
 import { Link } from 'react-router-dom'
 import { Control, LocalForm, Errors } from 'react-redux-form';
 import { baseUrl } from '../shared/baseUrl';
+import { Loading } from '../component/LoadingComponent'
 
 function RenderStaffList({ staffs }) {
     return (
-        <div className="col-6 col-md-4 col-lg-2 mt-3 mb-3">
+        <div >
             <Card>
                 <Link to={`/staffs/${staffs.id}`}>
                     <CardImg width="100%" src={staffs.image} alt={staffs.name} />
@@ -29,7 +30,7 @@ class StaffList extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            
+
             isModalOpen: false,
             name: '',
             doB: '',
@@ -107,7 +108,7 @@ class StaffList extends Component {
 
         };
         this.props.onAdd(newStaff);
-        console.log(this.state.department);
+
 
     };
 
@@ -157,17 +158,38 @@ class StaffList extends Component {
             this.state.annualLeave,
             this.state.overTime
         )
-            console.log(this.props.staffs)
-        const menu = this.props.staffs.map((val) => {
-        return (
-          <div className="col-6 col-md-4 col-lg-2 mt-3 mb-3" key={val.id}>
-            <RenderStaffList
-              staffs={val}
-            />
-          </div>
-        );
-      });
 
+        const menu = this.props.staffs.staffs.map((val) => {
+            return (
+                <div className="col-6 col-md-4 col-lg-2 mt-3 mb-3" key={val.id}>
+                    <RenderStaffList
+                        staffs={val}
+                    />
+                </div>
+            );
+        });
+
+        if (this.props.staffs.isLoading) {
+            return (
+                <div className="container">
+                    <div className="row">
+                        <Loading />
+                    </div>
+                </div>
+            )
+        }
+        else if (this.props.staffs.errMess) {
+            return (
+                <div className="container">
+                    <div className="row">
+                        <div className="col-12">
+                            <h4>{this.props.staffs.errMess}</h4>
+                        </div>
+                    </div>
+                </div>
+            )
+        }
+        else
         return (
             <div className="container">
                 <div className="row">

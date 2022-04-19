@@ -3,24 +3,24 @@ import { CardImg, CardText, CardTitle, Breadcrumb, BreadcrumbItem } from "reacts
 import { Link } from "react-router-dom";
 import dateFormat from "dateformat";
 
-function RenderStaff({ staff }) {
+function RenderStaff({ staffs, depart }) {
   return (
     <div className="col-12">
       <div className="row">
         <div className="col-12 col-md-4 col-lg-3">
-          <CardImg width="100%" src={staff.image} alt={staff.name} />
+          <CardImg width="100%" src={staffs.image} alt={staffs.name} />
         </div>
         <div className="col-12 col-md-8 col-lg-9">
-          <CardTitle>Họ và tên: {staff.name}</CardTitle>
+          <CardTitle>Họ và tên: {staffs.name}</CardTitle>
           <CardText>
-            Ngày sinh: {dateFormat(staff.doB, "dd/mm/yyyy")}
+            Ngày sinh: {dateFormat(staffs.doB, "dd/mm/yyyy")}
           </CardText>
           <CardText>
-            Ngày vào công ty: {dateFormat(staff.startDate, "dd/mm/yyyy")}
+            Ngày vào công ty: {dateFormat(staffs.startDate, "dd/mm/yyyy")}
           </CardText>
-          <CardText>Phòng ban: {staff.department.name|| staff.department}</CardText>
-          <CardText>Số ngày nghỉ còn lại: {staff.annualLeave}</CardText>
-          <CardText>Số ngày đã làm thêm: {staff.overTime}</CardText>
+          <CardText>Phòng ban:  </CardText>
+          <CardText>Số ngày nghỉ còn lại: {staffs.annualLeave}</CardText>
+          <CardText>Số ngày đã làm thêm: {staffs.overTime}</CardText>
         </div>
       </div>
     </div>
@@ -28,23 +28,23 @@ function RenderStaff({ staff }) {
 }
 
 const StaffDetail = (props) => {
-  if (props.staff != null) {
+  if (props.staffs != null) {
     return (
       <div className="container">
         <div className="row">
           <Breadcrumb>
             <BreadcrumbItem>
-              <Link to="/staff">Nhân viên</Link>
+              <Link to="/staffs">Nhân viên</Link>
             </BreadcrumbItem>
-            <BreadcrumbItem active>{props.staff.name}</BreadcrumbItem>
+            <BreadcrumbItem active>{props.staffs.name}</BreadcrumbItem>
           </Breadcrumb>
           <div className="col-12">
-            <h3>{props.staff.name}</h3>
+            <h3>{props.staffs.name}</h3>
             <hr />
           </div>
         </div>
         <div className="row mb-3">
-          <RenderStaff staff={props.staff} />
+          <RenderStaff staffs={props.staffs} />
         </div>
       </div>
     );
