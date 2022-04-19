@@ -18,7 +18,7 @@ function RenderStaff({ staffs, depart }) {
           <CardText>
             Ngày vào công ty: {dateFormat(staffs.startDate, "dd/mm/yyyy")}
           </CardText>
-          <CardText>Phòng ban:  </CardText>
+          <CardText>Phòng ban: {depart.name} </CardText>
           <CardText>Số ngày nghỉ còn lại: {staffs.annualLeave}</CardText>
           <CardText>Số ngày đã làm thêm: {staffs.overTime}</CardText>
         </div>
@@ -44,7 +44,10 @@ const StaffDetail = (props) => {
           </div>
         </div>
         <div className="row mb-3">
-          <RenderStaff staffs={props.staffs} />
+          <RenderStaff
+            staffs={props.staffs}
+            depart = {props.depart.filter((depart) => depart.id === props.staffs.departmentId)[0]}
+          />
         </div>
       </div>
     );

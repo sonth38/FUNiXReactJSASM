@@ -76,3 +76,41 @@ export const addDepart = (depart) => ({
   type: ActionTypes.ADD_DEPARTMENT,
   payload: depart
 });
+
+// Phần Staff Salary
+export const fetchSalary = () => (dispatch) => {
+
+  dispatch(salaryLoading(true));
+
+  return fetch(baseUrl + 'staffsSalary')
+  .then(response => {
+      if (response.ok) {
+        return response;
+      } else {
+        var error = new Error('Error ' + response.status + ': ' + response.statusText);
+        error.response = response;
+        throw error;
+      }
+    },
+    error => {
+          var errmess = new Error(error.message);
+          throw errmess;
+    })
+  .then(response => response.json())
+  .then(salary => dispatch(addSalary(salary)))
+  .catch(error => dispatch(departSalary(error.message)));
+}
+
+export const salaryLoading = () => ({
+  type: ActionTypes.SALARY_LOADING
+});
+
+export const departSalary = (errmess) => ({
+  type: ActionTypes.SALARY_FAILED,
+  payload: errmess
+});
+
+export const addSalary = (salary) => ({
+  type: ActionTypes.ADD_SALARY,
+  payload: salary
+});

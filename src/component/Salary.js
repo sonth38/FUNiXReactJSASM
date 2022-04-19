@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { Card, CardTitle, CardBody, CardText, Breadcrumb, BreadcrumbItem } from 'reactstrap';
 import {Link} from 'react-router-dom';
+import { Loading } from '../component/LoadingComponent'
 
 const luongCB = 3000000;
 const luongGio = 200000/8;
@@ -22,7 +23,7 @@ function RenderSalary ({salary, colorSalary }) {
 const Salary = (props) => {
     const [sortSalary,setSortSalary]=useState(false)
     
-    const salary = props.staffs.sort((a,b)=>sortSalary ? a.salaryScale - b.salaryScale : b.salaryScale - a.salaryScale).map((ss) => {
+    const salary = props.salary.salary.sort((a,b)=>sortSalary ? a.salaryScale - b.salaryScale : b.salaryScale - a.salaryScale).map((ss) => {
         return(
             <div className="col-12 col-md-6 col-lg-4 mt-2 mb-2" key={ss.id}>
                 <RenderSalary salary={ss} />
@@ -30,7 +31,27 @@ const Salary = (props) => {
         )
     });
     
-
+    if (props.salary.isLoading) {
+        return (
+            <div className="container">
+                <div className="row">
+                    <Loading />
+                </div>
+            </div>
+        )
+    }
+    else if (props.salary.errMess) {
+        return (
+            <div className="container">
+                <div className="row">
+                    <div className="col-12">
+                        <h4>{this.props.salary.errMess}</h4>
+                    </div>
+                </div>
+            </div>
+        )
+    }
+    else
     return(
         <div className="container">            
             <div className="row">
