@@ -2,10 +2,17 @@ import React from "react";
 import { CardImg, CardText, CardTitle, Breadcrumb, BreadcrumbItem } from "reactstrap";
 import { Link } from "react-router-dom";
 import dateFormat from "dateformat";
+import { FadeTransform} from 'react-animation-components'
+
 
 function RenderStaff({ staffs, depart }) {
   return (
     <div className="col-12">
+      <FadeTransform
+        in
+        transformProps={{
+          exitTransform: 'scale(0.5) translateY(-50%)'
+        }}>
       <div className="row">
         <div className="col-12 col-md-4 col-lg-3">
           <CardImg width="100%" src={staffs.image} alt={staffs.name} />
@@ -23,6 +30,7 @@ function RenderStaff({ staffs, depart }) {
           <CardText>Số ngày đã làm thêm: {staffs.overTime}</CardText>
         </div>
       </div>
+      </FadeTransform>
     </div>
   );
 }

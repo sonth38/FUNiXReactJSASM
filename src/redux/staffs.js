@@ -29,6 +29,13 @@ export const Staffs = (state = {
                 errMess: action.payload
             };
 
+        case ActionTypes.ADD_STAFF:
+            var staff = action.payload;
+            return {
+                ...state,
+                staffs: state.staffs.concat(staff)
+            }
+
         default:
             return state;
     }
